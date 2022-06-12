@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SmartControls.EntryLabel"
+    Orientation="Vertical"
+    HorizontalOptions="FillAndExpand">
+
+    <Label x:Name="the_label" HorizontalOptions="Start"/>
+    <Entry x:Name="the_entry" HorizontalOptions="FillAndExpand"/>
+</StackLayout>

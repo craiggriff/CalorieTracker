@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CalorieTracker.Report"
+             Title="Report">
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" >
+            <ListView HasUnevenRows="True" x:Name="listView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+
+                            <StackLayout Orientation="Vertical" Margin="0" Padding="2">
+                                <StackLayout BackgroundColor="{Binding back_colour}" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding user_token}"/>
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="When" TextColor="Black" WidthRequest="300"/>
+                                    <Label Text="Entries" TextColor="Black"/>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout Orientation="Horizontal" WidthRequest="300">
+                                        <Label Text="Week prior to last "/>
+                                        <Label Text="{Binding current_day}"/>
+                                    </StackLayout>
+                                    <StackLayout>
+                                        <Label Text="{Binding entries_7daysbefore}" WidthRequest="30" HorizontalTextAlignment="End"/>
+                                    </StackLayout>
+                                </StackLayout>
+                                
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout Orientation="Horizontal" WidthRequest="300">
+                                        <Label Text="Since last "/>
+                                        <Label Text="{Binding current_day}"/>
+                                    </StackLayout>
+                                    <StackLayout>
+                                        <Label Text="{Binding entries_last7days}"  WidthRequest="30" HorizontalTextAlignment="End"/>
+                                    </StackLayout>
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Difference  " HorizontalTextAlignment="End" WidthRequest="300"/>
+                                    <Label Text="{Binding entries_difference}" WidthRequest="30" HorizontalTextAlignment="End"/>
+                                </StackLayout>
+                                
+                                <Grid HeightRequest="35"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout Orientation="Horizontal" WidthRequest="300">
+                                        <Label Text="Average calories sice last "/>
+                                        <Label Text="{Binding current_day}"/>
+                                    </StackLayout>
+                                    <StackLayout>
+                                        <Label Text="{Binding average_last7days}" HorizontalOptions="StartAndExpand"/>
+                                    </StackLayout>
+                                </StackLayout>
+                                <Grid HeightRequest="10"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartControls.TimeLabel"
+             LayoutChanged="layout_changed">
+    <StackLayout Orientation="Horizontal" >
+        <Label x:Name="TheLabel" HorizontalOptions="Start" WidthRequest="120"/>
+        <TimePicker x:Name="TheTimeControl" PropertyChanged="OnTimechanged" />
+    </StackLayout>
+</StackLayout>

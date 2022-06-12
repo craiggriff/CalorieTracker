@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CalorieTracker.Send"
+             Title="Sending Data">
+    <ContentPage.Content>
+        <StackLayout>
+
+            <StackLayout Margin="3">
+                <Grid HeightRequest="45"/>
+                <ProgressBar x:Name="sending_progress"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

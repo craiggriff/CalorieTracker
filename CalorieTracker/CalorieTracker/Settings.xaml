@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CalorieTracker.Settings"
+             xmlns:controls="clr-namespace:SmartControls"
+             Title="App Settings">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout>
+                <controls:EntryLabel TextBinding="user_token" LabelText="User Token"/>
+            </StackLayout>
+            <Grid HeightRequest="40"></Grid>
+            <StackLayout>
+                <controls:EntryLabel TextBinding="admin_password" LabelText="Admin Password (ADMIN)"/>
+            </StackLayout>
+            <Grid HeightRequest="40"></Grid>
+            <StackLayout>
+                <controls:EntryLabel TextBinding="server_url" LabelText="Server URL"/>
+            </StackLayout>
+            <Grid HeightRequest="40"></Grid>
+            <StackLayout Orientation="Horizontal" VerticalOptions="End"  Spacing="0" HorizontalOptions="FillAndExpand">
+                <Button Text="Save" Clicked="OnSaveClicked" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+            <Grid HeightRequest="140"></Grid>
+            <StackLayout x:Name="admin_options" IsVisible="false" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Button Text="Delete all data" Clicked="OnClearAllClicked" HorizontalOptions="FillAndExpand"/>
+                <Button Text="Create random test data" Clicked="OnAddTestClicked" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
