@@ -9,16 +9,16 @@
 
             <StackLayout Orientation="Horizontal">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                    <controls:DateLabel x:Name="portion_date" TheDate="{Binding date}" LabelText="Date :" HorizontalOptions="Start"/>
+                    <controls:DateLabel x:Name="portion_date" TheDate="{Binding Date}" LabelText="Date :" HorizontalOptions="Start"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                    <controls:TimeLabel x:Name="portion_time" TheTime="{Binding time}" LabelText="Time :" HorizontalOptions="Start"/>
+                    <controls:TimeLabel x:Name="portion_time" TheTime="{Binding Time}" LabelText="Time :" HorizontalOptions="Start"/>
                 </StackLayout>
             </StackLayout>
             
-            <StackLayout WidthRequest="300"><controls:EntryLabelUnits x:Name="cal_entry" TextBinding="calories" LabelText="Calorie Count :" UnitsText="cal" EntryKeyboard="Numeric"/></StackLayout>
+            <StackLayout WidthRequest="300"><controls:EntryLabelUnits x:Name="cal_entry" TextBinding="Calories" LabelText="Calorie Count :" UnitsText="cal" EntryKeyboard="Numeric"/></StackLayout>
             <Grid HeightRequest="10"></Grid>
-            <controls:EntryLabel TextBinding="product" LabelText="Description"/>
+            <controls:EntryLabel TextBinding="Product" LabelText="Description" max_text_length="250"/>
             
             <Grid HeightRequest="20"></Grid>
             <Button x:Name="photo_button" Text="Take a picture" Clicked="OnPhotoClicked" HorizontalOptions="Center" WidthRequest="300"/>

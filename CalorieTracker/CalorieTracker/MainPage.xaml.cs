@@ -41,7 +41,7 @@ namespace CalorieTracker
 
                 this.user_token = user_token;
 
-                if(App.Database.SettingsRecord.b_admin && user_token.Length>2)
+                if(App.Database.SettingsRecord.Admin && user_token.Length>2)
                 {
                     // Generate a hex color based on User Token so it is eaier to see in the list
                     this.back_colour = "#" + Convert.ToString(((user_token[0] - 64) * 5) + 126, 16) 
@@ -52,7 +52,7 @@ namespace CalorieTracker
         }
 
         bool bSelected = false;
-
+        
         public MainPage()
         {
             InitializeComponent();
@@ -62,13 +62,12 @@ namespace CalorieTracker
 
             CreateList();
         }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            Title = "Calorie Tracker       User : " + (App.Database.SettingsRecord.b_admin ? "Administrator" : App.Database.SettingsRecord.user_token);
+            Title = "Calorie Tracker       User : " + (App.Database.SettingsRecord.Admin ? "Administrator" : App.Database.SettingsRecord.UserToken);
             bSelected = false;
-            if (App.Database.SettingsRecord.b_admin)
+            if (App.Database.SettingsRecord.Admin)
             {
                 report_option.IconImageSource = ImageSource.FromFile("report.png");
                 user_label.IsVisible = true;
@@ -90,44 +89,41 @@ namespace CalorieTracker
                 send_unsent_button.IsEnabled = false;
             }
 
-            if (App.Database.SettingsRecord.b_admin == true)
+            if (App.Database.SettingsRecord.Admin == true)
                 total_bar.IsVisible = false;
             else
                 total_bar.IsVisible = true;
 
             CreateList();
         }
-
         private void OnBack(object sender, EventArgs e)
         {
             datepicker1.Date = datepicker1.Date.AddDays(-1);
             datepicker2.Date = datepicker1.Date;
         }
-
         private void OnNext(object sender, EventArgs e)
         {
             datepicker1.Date = datepicker1.Date.AddDays(1);
             datepicker2.Date = datepicker1.Date;
         }
-
         private void CreateList()
         {
             List<ListData> dataSource = new List<ListData>();
 
             List<PortionTable> query = App.Database.GetPortionsByDateRange(datepicker1.Date.ToShortDateString(), datepicker2.Date.ToShortDateString());
 
-            if(App.Database.SettingsRecord.b_admin)
-                query = query.OrderBy(x => x.year).ThenBy(x => x.month).ThenBy(x => x.day).ThenBy(x => x.user_token).ThenBy(x => x.time).ToList();
+            if(App.Database.SettingsRecord.Admin)
+                query = query.OrderBy(x => x.Year).ThenBy(x => x.Month).ThenBy(x => x.Day).ThenBy(x => x.UserToken).ThenBy(x => x.Time).ToList();
             else
-                query = query.OrderBy(x => x.time).ToList();
+                query = query.OrderBy(x => x.Time).ToList();
 
             float total_cals = 0.0f;
 
             foreach (var item in query)
             {
-                dataSource.Add(new ListData(item.RecID, item.time, item.date, item.product, item.calories.ToString(), App.Database.SettingsRecord.b_admin?item.user_token:"", item.b_completed, item.b_sent));
-                if(item.b_completed==true)
-                    total_cals = total_cals + item.calories;
+                dataSource.Add(new ListData(item.RecID, item.Time, item.Date, item.Product, item.Calories.ToString(), App.Database.SettingsRecord.Admin?item.UserToken:"", item.Completed, item.Sent));
+                if(item.Completed==true)
+                    total_cals = total_cals + item.Calories;
             }
             total_calories.Text = total_cals.ToString();
 
@@ -138,7 +134,6 @@ namespace CalorieTracker
 
             listView.ItemsSource = dataSource;
         }
-
         private void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (bSelected == false)
@@ -153,24 +148,21 @@ namespace CalorieTracker
         {
             Navigation.PushAsync(new Send(), false);
         }
- 
         private void OnDateSelected(object sender, DateChangedEventArgs e)
         {
             if (datepicker1.Date > datepicker2.Date)
                 datepicker2.Date = datepicker1.Date;
             CreateList();
         }
-
         private void OnToday(object sender, EventArgs e)
         {
             datepicker1.Date = DateTime.Today;
             datepicker2.Date = DateTime.Today;
             CreateList();
         }
-
         private void OnAddClicked(object sender, EventArgs e)
         {
-            if (App.Database.SettingsRecord.user_token == "")
+            if (App.Database.SettingsRecord.UserToken == "")
             {
                 DisplayAlert("", "Please enter a user token", "OK");
                 Navigation.PushAsync(new Settings(), false);
@@ -181,19 +173,16 @@ namespace CalorieTracker
                 Navigation.PushAsync(new PortionView(), false);
             }
         }
-
         private void OnSettingsClicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new Settings(), false);
         }
-
         private void OnDateSelected2(object sender, DateChangedEventArgs e)
         {
             if (datepicker2.Date < datepicker1.Date)
                 datepicker1.Date = datepicker2.Date;
             CreateList();
         }
-
         private void OnReportClicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new Report(), false);

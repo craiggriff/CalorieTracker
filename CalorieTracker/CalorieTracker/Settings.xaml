@@ -7,15 +7,15 @@
     <ContentPage.Content>
         <StackLayout>
             <StackLayout>
-                <controls:EntryLabel TextBinding="user_token" LabelText="User Token"/>
+                <controls:EntryLabel TextBinding="UserToken" LabelText="User Token"/>
             </StackLayout>
             <Grid HeightRequest="40"></Grid>
             <StackLayout>
-                <controls:EntryLabel TextBinding="admin_password" LabelText="Admin Password (ADMIN)"/>
+                <controls:EntryLabel TextBinding="AdminPassword" LabelText="Admin Password (ADMIN)"/>
             </StackLayout>
             <Grid HeightRequest="40"></Grid>
             <StackLayout>
-                <controls:EntryLabel TextBinding="server_url" LabelText="Server URL"/>
+                <controls:EntryLabel TextBinding="ServerURL" LabelText="Server URL"/>
             </StackLayout>
             <Grid HeightRequest="40"></Grid>
             <StackLayout Orientation="Horizontal" VerticalOptions="End"  Spacing="0" HorizontalOptions="FillAndExpand">

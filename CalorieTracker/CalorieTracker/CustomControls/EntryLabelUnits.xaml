@@ -2,11 +2,11 @@
 <StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="SmartControls.EntryLabelUnits">
-    <StackLayout Orientation="Horizontal" HeightRequest="45">
+    <StackLayout Orientation="Horizontal">
         <Label x:Name="the_label" WidthRequest="150"/>
         <Grid WidthRequest="20"/>
-        <Entry x:Name="the_entry" MaxLength="9" WidthRequest="120" HorizontalTextAlignment="End"  Keyboard="Numeric" HorizontalOptions="End" TextChanged="OnTextChanged"/>
+        <Entry x:Name="the_entry" MaxLength="4" WidthRequest="80" HorizontalTextAlignment="End"  Keyboard="Numeric" HorizontalOptions="End" TextChanged="OnTextChanged"/>
         <Grid WidthRequest="20"/>
-        <Label x:Name="the_units" Text="mm" />
+        <Label x:Name="the_units" />
     </StackLayout>
 </StackLayout>

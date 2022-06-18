@@ -9,9 +9,8 @@
         <ToolbarItem x:Name="report_option" Clicked="OnReportClicked"/>
         <ToolbarItem Clicked="OnSettingsClicked" Icon="settings.png"/>
     </ContentPage.ToolbarItems>
-    
-    <StackLayout Orientation="Vertical" >
 
+    <StackLayout Orientation="Vertical" >
         <StackLayout Orientation="Horizontal">
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                 <Label Text=" From:" VerticalOptions="Center"/>
@@ -26,7 +25,6 @@
                 <Button Text="Today" Clicked="OnToday" WidthRequest="95" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
         </StackLayout>
-        
         <StackLayout Orientation="Horizontal" BackgroundColor="AliceBlue" Padding="4">
             <Label  Text="Date" WidthRequest="100" />
             <Label  Text="Time" WidthRequest="100" />
@@ -38,12 +36,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-
                         <StackLayout Orientation="Vertical" BackgroundColor="{Binding back_colour}"  Margin="2" Padding="2">
                             <StackLayout Orientation="Horizontal" VerticalOptions="Start" HorizontalOptions="Start">
                                 <Label Text="{Binding date}" WidthRequest="100" TextColor="{Binding text_colour}"/>
                                 <Label Text="{Binding time}" WidthRequest="100" TextColor="{Binding text_colour}"/>
-
                                 <Label Text="{Binding calories}" WidthRequest="100" TextColor="{Binding text_colour}" HorizontalTextAlignment="End"/>
                                 <Grid WidthRequest="100" ></Grid>
                                 <Label Text="{Binding user_token}" TextColor="{Binding text_colour}" HorizontalOptions="End"/>
@@ -56,20 +52,15 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
         <StackLayout x:Name="total_bar" Orientation="Horizontal" BackgroundColor="AliceBlue" Padding="4">
             <Grid WidthRequest="100" />
             <Label Text="Total" WidthRequest="100" />
             <Label x:Name="total_calories" WidthRequest="100" HorizontalTextAlignment="End" />
             <Label Text="  cal" WidthRequest="80" />
         </StackLayout>
-        
-
-        
         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
             <Button x:Name="send_unsent_button" Text="Send" Clicked="OnSyncClicked" HorizontalOptions="FillAndExpand"/>
             <Button Text="Add" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"/>
         </StackLayout>
     </StackLayout>
-
 </ContentPage>

@@ -16,18 +16,17 @@ namespace CalorieTracker
         {
             InitializeComponent();
             BindingContext = App.Database.SettingsRecord as SettingsTable;
-            if(App.Database.SettingsRecord.b_admin==true)
+            if(App.Database.SettingsRecord.Admin==true)
                 admin_options.IsVisible = true;
         }
-
         private void OnSaveClicked(object sender, EventArgs e)
         {
-            App.Database.SettingsRecord.user_token = App.Database.SettingsRecord.user_token.ToUpper().Trim();
-            App.Database.SettingsRecord.admin_password = App.Database.SettingsRecord.admin_password.ToUpper().Trim();
-            if (App.Database.SettingsRecord.admin_password == "ADMIN")
-                App.Database.SettingsRecord.b_admin = true;
+            App.Database.SettingsRecord.UserToken = App.Database.SettingsRecord.UserToken.ToUpper().Trim();
+            App.Database.SettingsRecord.AdminPassword = App.Database.SettingsRecord.AdminPassword.ToUpper().Trim();
+            if (App.Database.SettingsRecord.AdminPassword == "ADMIN")
+                App.Database.SettingsRecord.Admin = true;
             else
-                App.Database.SettingsRecord.b_admin = false;
+                App.Database.SettingsRecord.Admin = false;
             App.Database.SaveSettings();
             Navigation.PopAsync();
         }
@@ -36,11 +35,11 @@ namespace CalorieTracker
             if (await DisplayAlert("", "Delete all data?", "   Yes   ", "   No   "))
             {
                 App.Database.DeleteAllPortionRecords();
-                App.Database.SettingsRecord.user_token = "";
-                App.Database.SettingsRecord.admin_password = "";
-                App.Database.SettingsRecord.b_admin = false;
+                App.Database.SettingsRecord.UserToken = "";
+                App.Database.SettingsRecord.AdminPassword = "";
+                App.Database.SettingsRecord.Admin = false;
                 App.Database.SaveSettings();
-                Navigation.PopAsync();
+                await Navigation.PopAsync();
             }
         }
         private async void OnAddTestClicked(object sender, EventArgs e)

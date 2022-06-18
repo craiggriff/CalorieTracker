@@ -22,7 +22,6 @@ namespace SmartControls
             get { return (string)GetValue(TheDateProperty); }
             set { SetValue(TheDateProperty, value); }
         }
-
         public DateLabel()
         {
             InitializeComponent();

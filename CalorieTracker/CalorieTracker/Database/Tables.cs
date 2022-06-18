@@ -9,28 +9,28 @@ namespace CalorieTracker
     {
         [PrimaryKey, AutoIncrement]
         public int RecID { get; set; }
-        public bool b_deleted { get; set; }
-        public bool b_completed { get; set; }
-        public bool b_sent { get; set; }
-        public string date { get; set; }
-        public int day { get; set; } // Having to store date like this because SQL Lite does not support DateTime
-        public int month { get; set; }
-        public int year { get; set; }
-        public string time { get; set; }
-        public string product { get; set; }
-        public int calories { get; set; }
-        public string user_token { get; set; }
-        public string database_ID { get; set; } // Id at the server side, set by result of sending
+        public bool Deleted { get; set; }
+        public bool Completed { get; set; }
+        public bool Sent { get; set; }
+        public string Date { get; set; }
+        public int Day { get; set; } // Having to store date like this because SQL Lite does not support DateTime
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public string Time { get; set; }
+        public string Product { get; set; }
+        public int Calories { get; set; }
+        public string UserToken { get; set; }
+        public string DatabaseID { get; set; } // Id at the server side, set by result of sending
     }
 
     public class SettingsTable
     {
         [PrimaryKey, AutoIncrement]
         public int RecID { get; set; }
-        public string user_token { get; set; }
-        public string admin_password { get; set; }
-        public bool b_admin { get; set;  }
-        public string server_url { get; set; }
+        public string UserToken { get; set; }
+        public string AdminPassword { get; set; }
+        public bool Admin { get; set;  }
+        public string ServerURL { get; set; }
 
     }
 }

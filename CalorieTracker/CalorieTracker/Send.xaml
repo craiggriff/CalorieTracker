@@ -5,7 +5,6 @@
              Title="Sending Data">
     <ContentPage.Content>
         <StackLayout>
-
             <StackLayout Margin="3">
                 <Grid HeightRequest="45"/>
                 <ProgressBar x:Name="sending_progress"/>

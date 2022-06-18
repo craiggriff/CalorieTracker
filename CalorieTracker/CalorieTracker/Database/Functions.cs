@@ -21,11 +21,13 @@ namespace CalorieTracker
                 SettingsRecord = database.Table<SettingsTable>().Where(i => i.RecID == 1).FirstOrDefault();
                 if (SettingsRecord == null)
                 {
-                    SettingsRecord = new SettingsTable();
-                    SettingsRecord.user_token = App.GetApp.b_test?"JAN":"";
-                    SettingsRecord.admin_password = "";
-                    SettingsRecord.RecID = 1;
-                    SettingsRecord.server_url = "http://192.168.137.166";
+                    SettingsRecord = new SettingsTable
+                    {
+                        UserToken = App.GetApp.b_test ? "JAN" : "",
+                        AdminPassword = "",
+                        RecID = 1,
+                        ServerURL = "http://192.168.137.166"
+                    };
                     database.Insert(SettingsRecord);
                 }
             }
@@ -43,18 +45,18 @@ namespace CalorieTracker
 
             LoadSettings();
 
-            if(App.GetApp.b_test)CreateTestData();
+            if (App.GetApp.b_test) CreateTestData();
         }
         public int SavePortionRecord()
         {
             if (PortionRecord == null)
                 return 0;
 
-            if(PortionRecord.user_token=="") PortionRecord.user_token = SettingsRecord.user_token;
+            if (PortionRecord.UserToken == "") PortionRecord.UserToken = SettingsRecord.UserToken;
 
-            PortionRecord.day = int.Parse(PortionRecord.date.Substring(0, 2));
-            PortionRecord.month = int.Parse(PortionRecord.date.Substring(3, 2));
-            PortionRecord.year = int.Parse(PortionRecord.date.Substring(6, 4));
+            PortionRecord.Day = int.Parse(PortionRecord.Date.Substring(0, 2));
+            PortionRecord.Month = int.Parse(PortionRecord.Date.Substring(3, 2));
+            PortionRecord.Year = int.Parse(PortionRecord.Date.Substring(6, 4));
 
             if (PortionRecord.RecID != 0)
                 return database.Update(PortionRecord);
@@ -85,20 +87,20 @@ namespace CalorieTracker
             DateTime d_from = DateTime.ParseExact(date_from, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             DateTime d_to = DateTime.ParseExact(date_to, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-            while(d_from <= d_to)
+            while (d_from <= d_to)
             {
                 string s_from = d_from.ToShortDateString();
-                if(SettingsRecord.b_admin)
-                    ret.AddRange(database.Table<PortionTable>().Where(i => i.date == s_from).ToList());
+                if (SettingsRecord.Admin)
+                    ret.AddRange(database.Table<PortionTable>().Where(i => i.Date == s_from).ToList());
                 else
-                    ret.AddRange(database.Table<PortionTable>().Where(i => i.date == s_from && i.user_token == SettingsRecord.user_token).ToList());
+                    ret.AddRange(database.Table<PortionTable>().Where(i => i.Date == s_from && i.UserToken == SettingsRecord.UserToken).ToList());
                 d_from = d_from.AddDays(1);
             };
             return ret;
         }
         public List<PortionTable> GetUnsentPortions()
         {
-            return database.Table<PortionTable>().Where(i => i.b_sent == false && i.b_completed == true).ToList();
+            return database.Table<PortionTable>().Where(i => i.Sent == false && i.Completed == true).ToList();
         }
         public PortionTable GetPortionByID(int ID)
         {
@@ -118,12 +120,12 @@ namespace CalorieTracker
         {
             PortionRecord = new PortionTable
             {
-                user_token = SettingsRecord.user_token,
-                product = "",
-                b_completed = false,
-                b_sent = false,
-                date = DateTime.Today.ToShortDateString(),
-                time = DateTime.Now.ToShortTimeString()
+                UserToken = SettingsRecord.UserToken,
+                Product = "",
+                Completed = false,
+                Sent = false,
+                Date = DateTime.Today.ToShortDateString(),
+                Time = DateTime.Now.ToShortTimeString()
             };
             SavePortionRecord();
         }
@@ -149,21 +151,23 @@ namespace CalorieTracker
                 string s_date = date_ref.ToShortDateString();
                 for (int i = 0; i < rand.Next(6, 10); i++)
                 {
-                    PortionRecord = new PortionTable();
-
-                    PortionRecord.date = s_date;
-                    PortionRecord.time = rand.Next(8,19).ToString().PadLeft(2, '0')+":"+ rand.Next(0, 59).ToString().PadLeft(2, '0'); 
-
                     int item = rand.Next(0, food_items.Count - 1);
-                    PortionRecord.product = food_items[item].p;
-                    PortionRecord.calories = food_items[item].c;
-                    switch (rand.Next(0,2))
+                    string user_token = "";
+                    switch (rand.Next(0, 2))
                     {
-                        case 0: PortionRecord.user_token = "JAN"; break; // 2 test users
-                        case 1: PortionRecord.user_token = "TIM"; break;
+                        case 0: user_token = "JAN"; break; // 2 test users
+                        case 1: user_token = "TIM"; break;
                     }
-                    PortionRecord.b_completed = true;
-                    PortionRecord.b_sent = true;
+                    PortionRecord = new PortionTable
+                    {
+                        Date = s_date,
+                        Time = rand.Next(8, 19).ToString().PadLeft(2, '0') + ":" + rand.Next(0, 59).ToString().PadLeft(2, '0'),
+                        Product = food_items[item].p,
+                        Calories = food_items[item].c,
+                        Completed = true,
+                        Sent = true,
+                        UserToken = user_token
+                    };
                     SavePortionRecord();
                 }
                 date_ref = date_ref.AddDays(-1);

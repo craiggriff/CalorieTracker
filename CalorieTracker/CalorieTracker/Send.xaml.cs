@@ -61,18 +61,18 @@ namespace CalorieTracker
 
             XDocument localTree = new XDocument(
             new XElement("Portion",
-            new XElement("UserToken", item.user_token),
+            new XElement("UserToken", item.UserToken),
             new XElement("RecordID", item.RecID),
-            new XElement("DatabaseID", item.database_ID),
-            new XElement("Date", item.date),
-            new XElement("Time", item.time),
-            new XElement("Calories", item.calories),
-            new XElement("Description", item.product),
+            new XElement("DatabaseID", item.DatabaseID),
+            new XElement("Date", item.Date),
+            new XElement("Time", item.Time),
+            new XElement("Calories", item.Calories),
+            new XElement("Description", item.Product),
             new XElement("Picture", bImage?System.Convert.ToBase64String(image_binary):"")));
 
             localpostData.Append(localTree.ToString());
 
-            Uri thisuri = new Uri(App.Database.SettingsRecord.server_url + "/ReceivePortion");
+            Uri thisuri = new Uri(App.Database.SettingsRecord.ServerURL + "/ReceivePortion");
             HttpHelper helper = new HttpHelper(thisuri, "POST",
             new KeyValuePair<string, string>("Portion", localpostData.ToString()));
             helper.ResponseComplete += new HttpResponseCompleteEventHandler(this.CommandComplete);
@@ -87,8 +87,8 @@ namespace CalorieTracker
             {
                 if(sendResponse.Substring(0,6)=="Saved:")
                 {
-                    portions[current_portion].database_ID = sendResponse.Substring(6, sendResponse.Length - 6);
-                    portions[current_portion].b_sent = true;
+                    portions[current_portion].DatabaseID = sendResponse.Substring(6, sendResponse.Length - 6);
+                    portions[current_portion].Sent = true;
                     App.Database.SavePortionRecord(portions[current_portion]);
                 }
             }

@@ -30,10 +30,6 @@ namespace CalorieTracker
             this.Request.ContentType = "application/x-www-form-urlencoded";
             this.Request.Method = method;
 
-            //this.Request.
-            //ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
-
-            //this.Request.t
             this.PostValues = new Dictionary<string, string>();
             if (postValues != null && postValues.Length > 0)
             {
@@ -81,7 +77,7 @@ namespace CalorieTracker
             HttpHelper helper = ar.AsyncState as HttpHelper;
             if (helper != null)
             {
-                HttpWebResponse response;// = (HttpWebResponse)helper.Request.EndGetResponse(ar);
+                HttpWebResponse response;
 
                 try
                 {

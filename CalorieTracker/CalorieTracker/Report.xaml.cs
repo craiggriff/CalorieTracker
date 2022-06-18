@@ -35,13 +35,11 @@ namespace CalorieTracker
                         + Convert.ToString(((user_token[1] - 64) * 5) + 126, 16);
             }
         }
-
         public Report()
         {
             InitializeComponent();
             CreateReport();
         }
-
         private void CreateReport()
         {
             List<ListData> dataSource = new List<ListData>();
@@ -49,22 +47,22 @@ namespace CalorieTracker
             List<PortionTable> query_last7days = App.Database.GetPortionsByDateRange(DateTime.Today.AddDays(-7).ToShortDateString(), DateTime.Today.ToShortDateString());
             List<PortionTable> query_7daysbefore = App.Database.GetPortionsByDateRange(DateTime.Today.AddDays(-14).ToShortDateString(), DateTime.Today.AddDays(-7).ToShortDateString());
 
-            var user_tokens = query_last7days.Select(x => x.user_token).Distinct();
+            var user_tokens = query_last7days.Select(x => x.UserToken).Distinct();
 
             foreach (var user_token in user_tokens)
             {
                 float last7days_daily_average = 0.0f;
 
-                foreach(var portion in query_last7days.Where(x => x.user_token == user_token))
+                foreach(var portion in query_last7days.Where(x => x.UserToken == user_token))
                 {
-                    last7days_daily_average = last7days_daily_average + portion.calories;
+                    last7days_daily_average = last7days_daily_average + portion.Calories;
                 }
 
                 last7days_daily_average = last7days_daily_average / 7;
 
                 dataSource.Add(new ListData(user_token, 
-                    query_last7days.Where(x => x.user_token == user_token).Count().ToString(), 
-                    query_7daysbefore.Where(x => x.user_token == user_token).Count().ToString(), 
+                    query_last7days.Where(x => x.UserToken == user_token).Count().ToString(), 
+                    query_7daysbefore.Where(x => x.UserToken == user_token).Count().ToString(), 
                     ((int)last7days_daily_average).ToString(), 
                     DateTime.Today.ToString("dddd")));
             }

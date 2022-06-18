@@ -40,18 +40,15 @@ namespace CalorieTracker
         {
             string error_text = "";
 
-            if (App.Database.PortionRecord.product == "")
+            if (App.Database.PortionRecord.Product == "")
                 error_text = error_text + "You must enter a description\n";
 
-            if (IsAllDigits(cal_entry.TextBinding) && (App.Database.PortionRecord.calories < 1 || App.Database.PortionRecord.calories>2000))
+            if (IsAllDigits(cal_entry.TextBinding) && (App.Database.PortionRecord.Calories < 1 || App.Database.PortionRecord.Calories>2000))
                 error_text = error_text + "Calories must be a whole number between 1 and 2000\n";
-
-            if (App.Files.FileExists(App.Database.PortionRecord.RecID.ToString() + ".jpg") == false)
-                error_text = error_text + "No photograph taken\n";
 
             if (error_text != "")
             {
-                App.Database.PortionRecord.b_completed = false;
+                App.Database.PortionRecord.Completed = false;
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     var response = await DisplayAlert("Invalid",
@@ -65,23 +62,21 @@ namespace CalorieTracker
             }
             else
             {
-                App.Database.PortionRecord.b_completed = true;
+                App.Database.PortionRecord.Completed = true;
                 App.Database.SavePortionRecord();
                 Navigation.PopAsync();
             }
         }
-
         protected override bool OnBackButtonPressed()
         {
             ValidateSaveAndClose();
             return true;
         }
-        
         private async void OnPhotoClicked(object sender, EventArgs e)
         {
             await CrossMedia.Current.Initialize();
 
-            App.Database.PortionRecord.b_sent = false;
+            App.Database.PortionRecord.Sent = false;
 
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
@@ -102,14 +97,12 @@ namespace CalorieTracker
                 LoadImage();
             }
         }
-
         void LoadImage()
         {
             Picture.Source = ImageSource.FromFile(App.Files.AddPathToFilename(App.Database.PortionRecord.RecID.ToString() + ".jpg"));
             if (App.Files.FileExists(App.Database.PortionRecord.RecID.ToString() + ".jpg"))
                 photo_button.IsVisible = false;
         }
-
         private async void OnDeleteClicked(object sender, EventArgs e)
         {
             var answer = await DisplayAlert("Delete Food Portion?", "", "   Yes   ", "   No   ");
