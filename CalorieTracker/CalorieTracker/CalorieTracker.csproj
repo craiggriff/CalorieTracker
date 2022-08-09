@@ -12,13 +12,17 @@
 
   <ItemGroup>
     <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+    <PackageReference Include="System.Text.Json" Version="6.0.5" />
     <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="PortionView.xaml.cs">
+    <Compile Update="Views\PortionList.xaml.cs">
+      <DependentUpon>PortionList.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PortionView.xaml.cs">
       <DependentUpon>PortionView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -36,16 +40,16 @@
     <EmbeddedResource Update="CustomControls\TimeLabel.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="PortionView.xaml">
+    <EmbeddedResource Update="Views\PortionView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Report.xaml">
+    <EmbeddedResource Update="Views\Report.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Send.xaml">
+    <EmbeddedResource Update="Views\Send.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Settings.xaml">
+    <EmbeddedResource Update="Views\Settings.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

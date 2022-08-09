@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using CalorieTracker.Models;
 
 namespace CalorieTracker
 {
@@ -15,7 +16,7 @@ namespace CalorieTracker
         public Settings()
         {
             InitializeComponent();
-            BindingContext = App.Database.SettingsRecord as SettingsTable;
+            BindingContext = App.Database.SettingsRecord as SettingsItem;
             if(App.Database.SettingsRecord.Admin==true)
                 admin_options.IsVisible = true;
         }

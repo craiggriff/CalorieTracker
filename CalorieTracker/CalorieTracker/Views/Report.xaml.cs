@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using CalorieTracker.Models;
 
 namespace CalorieTracker
 {
@@ -44,8 +45,8 @@ namespace CalorieTracker
         {
             List<ListData> dataSource = new List<ListData>();
 
-            List<PortionTable> query_last7days = App.Database.GetPortionsByDateRange(DateTime.Today.AddDays(-7).ToShortDateString(), DateTime.Today.ToShortDateString());
-            List<PortionTable> query_7daysbefore = App.Database.GetPortionsByDateRange(DateTime.Today.AddDays(-14).ToShortDateString(), DateTime.Today.AddDays(-7).ToShortDateString());
+            List<PortionItem> query_last7days = App.Database.GetPortionsByDateRange(DateTime.Today.AddDays(-7).ToShortDateString(), DateTime.Today.ToShortDateString());
+            List<PortionItem> query_7daysbefore = App.Database.GetPortionsByDateRange(DateTime.Today.AddDays(-14).ToShortDateString(), DateTime.Today.AddDays(-7).ToShortDateString());
 
             var user_tokens = query_last7days.Select(x => x.UserToken).Distinct();
 

@@ -18,8 +18,9 @@
             
             <StackLayout WidthRequest="300"><controls:EntryLabelUnits x:Name="cal_entry" TextBinding="Calories" LabelText="Calorie Count :" UnitsText="cal" EntryKeyboard="Numeric"/></StackLayout>
             <Grid HeightRequest="10"></Grid>
-            <controls:EntryLabel TextBinding="Product" LabelText="Description" max_text_length="250"/>
-            
+            <!--<controls:EntryLabel TextBinding="Product" LabelText="Description" max_text_length="250"/>-->
+            <Entry Text="{Binding Desc}" Placeholder="Product Description"/>
+
             <Grid HeightRequest="20"></Grid>
             <Button x:Name="photo_button" Text="Take a picture" Clicked="OnPhotoClicked" HorizontalOptions="Center" WidthRequest="300"/>
 
@@ -29,7 +30,7 @@
 
             <StackLayout Orientation="Horizontal" Spacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="End">
                 <Button Text="Delete" Clicked="OnDeleteClicked" HorizontalOptions="FillAndExpand"/>
-                <Button Text="Save" Clicked="OnSaveClicked" HorizontalOptions="FillAndExpand"/>
+                <Button Text="Save" Command="{Binding SavePortionCommand}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

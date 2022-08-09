@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System.IO;
+using CalorieTracker.ViewModel;
 
 namespace CalorieTracker
 {
@@ -20,56 +21,23 @@ namespace CalorieTracker
         {
             InitializeComponent();
 
-            BindingContext = App.Database.PortionRecord as PortionTable;
+            //BindingContext = App.Database.PortionRecord as PortionTable;
+            BindingContext = new PortionViewModel(Navigation);
             LoadImage();
         }
-        private void OnSaveClicked(object sender, EventArgs e)
-        {
-            ValidateSaveAndClose();
-        }
-        bool IsAllDigits(string s)
-        {
-            foreach (char c in s)
-            {
-                if (!char.IsDigit(c))
-                    return false;
-            }
-            return true;
-        }
-        private void ValidateSaveAndClose()
-        {
-            string error_text = "";
 
-            if (App.Database.PortionRecord.Product == "")
-                error_text = error_text + "You must enter a description\n";
 
-            if (IsAllDigits(cal_entry.TextBinding) && (App.Database.PortionRecord.Calories < 1 || App.Database.PortionRecord.Calories>2000))
-                error_text = error_text + "Calories must be a whole number between 1 and 2000\n";
-
-            if (error_text != "")
-            {
-                App.Database.PortionRecord.Completed = false;
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    var response = await DisplayAlert("Invalid",
-                        "\n\n" + error_text + "\n\nSave as incomplete?\n", "   Yes   ", "   No   ");
-                    if (response)
-                    {
-                        App.Database.SavePortionRecord();
-                        await Navigation.PopAsync();
-                    }
-                });
-            }
-            else
-            {
-                App.Database.PortionRecord.Completed = true;
-                App.Database.SavePortionRecord();
-                Navigation.PopAsync();
-            }
-        }
         protected override bool OnBackButtonPressed()
         {
-            ValidateSaveAndClose();
+            //ValidateSaveAndClose();
+            
+            var vm = (PortionViewModel)BindingContext;
+            if (vm.MyBackPressCommand.CanExecute(null))  // You can add parameters if any
+            {
+                vm.MyBackPressCommand.Execute(null); // You can add parameters if any
+            }
+            
+
             return true;
         }
         private async void OnPhotoClicked(object sender, EventArgs e)

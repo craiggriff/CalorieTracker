@@ -1,3 +1,5 @@
-# CalorieTracker
+Calorie Tracker Xamarin Application
 
-Android and UWP C# Xamarin application
+This application is best run on Android Device
+
+[Click here for Video Introduction](https://youtu.be/hraxcwUvpMY)

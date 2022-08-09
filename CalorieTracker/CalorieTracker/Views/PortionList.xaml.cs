@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using CalorieTracker.Models;
 
 namespace CalorieTracker
 {
-    public partial class MainPage : ContentPage
+    public partial class PortionList : ContentPage
     {
         public class ListData
         {
@@ -53,7 +54,7 @@ namespace CalorieTracker
 
         bool bSelected = false;
         
-        public MainPage()
+        public PortionList()
         {
             InitializeComponent();
 
@@ -110,7 +111,7 @@ namespace CalorieTracker
         {
             List<ListData> dataSource = new List<ListData>();
 
-            List<PortionTable> query = App.Database.GetPortionsByDateRange(datepicker1.Date.ToShortDateString(), datepicker2.Date.ToShortDateString());
+            List<PortionItem> query = App.Database.GetPortionsByDateRange(datepicker1.Date.ToShortDateString(), datepicker2.Date.ToShortDateString());
 
             if(App.Database.SettingsRecord.Admin)
                 query = query.OrderBy(x => x.Year).ThenBy(x => x.Month).ThenBy(x => x.Day).ThenBy(x => x.UserToken).ThenBy(x => x.Time).ToList();

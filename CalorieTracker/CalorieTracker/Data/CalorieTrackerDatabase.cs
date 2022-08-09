@@ -3,30 +3,32 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using CalorieTracker.Models;
 
 namespace CalorieTracker
 {
-    public class DataFunctions
+    public class CalorieTrackerDatabase
     {
         readonly SQLiteConnection database;
 
-        public PortionTable PortionRecord;        // Instance of the current loaded
+        public PortionItem PortionRecord;        // Instance of the current loaded
 
-        public SettingsTable SettingsRecord;
+        public SettingsItem SettingsRecord;
+
 
         public void LoadSettings()
         {
             if (SettingsRecord == null)
             {
-                SettingsRecord = database.Table<SettingsTable>().Where(i => i.RecID == 1).FirstOrDefault();
+                SettingsRecord = database.Table<SettingsItem>().Where(i => i.RecID == 1).FirstOrDefault();
                 if (SettingsRecord == null)
                 {
-                    SettingsRecord = new SettingsTable
+                    SettingsRecord = new SettingsItem
                     {
                         UserToken = App.GetApp.b_test ? "JAN" : "",
                         AdminPassword = "",
                         RecID = 1,
-                        ServerURL = "http://192.168.137.166"
+                        ServerURL = "https://192.168.137.15/7254"
                     };
                     database.Insert(SettingsRecord);
                 }
@@ -36,12 +38,12 @@ namespace CalorieTracker
         {
             database.Update(SettingsRecord);
         }
-        public DataFunctions(string dbPath)
+        public CalorieTrackerDatabase(string dbPath)
         {
             database = new SQLiteConnection(dbPath);
 
-            database.CreateTable<PortionTable>();
-            database.CreateTable<SettingsTable>();
+            database.CreateTable<PortionItem>();
+            database.CreateTable<SettingsItem>();
 
             LoadSettings();
 
@@ -63,7 +65,7 @@ namespace CalorieTracker
             else
                 return database.Insert(PortionRecord);
         }
-        public int SavePortionRecord(PortionTable p)
+        public int SavePortionRecord(PortionItem p)
         {
             PortionRecord = p;
             return SavePortionRecord();
@@ -80,9 +82,9 @@ namespace CalorieTracker
         {
             database.Execute("DELETE FROM [PortionTable]");
         }
-        public List<PortionTable> GetPortionsByDateRange(string date_from, string date_to)
+        public List<PortionItem> GetPortionsByDateRange(string date_from, string date_to)
         {
-            List<PortionTable> ret = new List<PortionTable>();
+            List<PortionItem> ret = new List<PortionItem>();
 
             DateTime d_from = DateTime.ParseExact(date_from, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             DateTime d_to = DateTime.ParseExact(date_to, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -91,20 +93,20 @@ namespace CalorieTracker
             {
                 string s_from = d_from.ToShortDateString();
                 if (SettingsRecord.Admin)
-                    ret.AddRange(database.Table<PortionTable>().Where(i => i.Date == s_from).ToList());
+                    ret.AddRange(database.Table<PortionItem>().Where(i => i.Date == s_from).ToList());
                 else
-                    ret.AddRange(database.Table<PortionTable>().Where(i => i.Date == s_from && i.UserToken == SettingsRecord.UserToken).ToList());
+                    ret.AddRange(database.Table<PortionItem>().Where(i => i.Date == s_from && i.UserToken == SettingsRecord.UserToken).ToList());
                 d_from = d_from.AddDays(1);
             };
             return ret;
         }
-        public List<PortionTable> GetUnsentPortions()
+        public List<PortionItem> GetUnsentPortions()
         {
-            return database.Table<PortionTable>().Where(i => i.Sent == false && i.Completed == true).ToList();
+            return database.Table<PortionItem>().Where(i => i.Sent == false && i.Completed == true).ToList();
         }
-        public PortionTable GetPortionByID(int ID)
+        public PortionItem GetPortionByID(int ID)
         {
-            return database.Table<PortionTable>().Where(i => i.RecID == ID).FirstOrDefault();
+            return database.Table<PortionItem>().Where(i => i.RecID == ID).FirstOrDefault();
         }
         private class food_item
         {
@@ -118,7 +120,7 @@ namespace CalorieTracker
         }
         public void CreatePortionRecord()
         {
-            PortionRecord = new PortionTable
+            PortionRecord = new PortionItem
             {
                 UserToken = SettingsRecord.UserToken,
                 Product = "",
@@ -158,7 +160,7 @@ namespace CalorieTracker
                         case 0: user_token = "JAN"; break; // 2 test users
                         case 1: user_token = "TIM"; break;
                     }
-                    PortionRecord = new PortionTable
+                    PortionRecord = new PortionItem
                     {
                         Date = s_date,
                         Time = rand.Next(8, 19).ToString().PadLeft(2, '0') + ":" + rand.Next(0, 59).ToString().PadLeft(2, '0'),

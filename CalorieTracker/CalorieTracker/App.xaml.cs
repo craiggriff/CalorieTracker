@@ -21,15 +21,15 @@ namespace CalorieTracker
             get { return fileService; }
         }
 
-        private static DataFunctions _data;
+        private static CalorieTrackerDatabase _data;
 
-        public static DataFunctions Database
+        public static CalorieTrackerDatabase Database
         {
             get
             {
                 if (_data == null)
                 {
-                    _data = new DataFunctions(Files.AddPathToFilename("CalorieTrackerSQLite.db3"));
+                    _data = new CalorieTrackerDatabase(Files.AddPathToFilename("CalorieTrackerSQLite.db3"));
                 }
                 return _data;
             }
@@ -47,7 +47,7 @@ namespace CalorieTracker
             fileService.CreateDirectory("Photos");
 
             //MainPage = new MainPage();
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new PortionList());
         }
 
         protected override void OnStart()
