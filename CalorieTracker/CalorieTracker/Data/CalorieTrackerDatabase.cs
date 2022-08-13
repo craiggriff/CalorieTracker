@@ -28,7 +28,7 @@ namespace CalorieTracker
                         UserToken = App.GetApp.b_test ? "JAN" : "",
                         AdminPassword = "",
                         RecID = 1,
-                        ServerURL = "https://192.168.137.15/7254"
+                        ServerURL = "https://192.168.137.15:7254"
                     };
                     database.Insert(SettingsRecord);
                 }
@@ -80,7 +80,7 @@ namespace CalorieTracker
         }
         public void DeleteAllPortionRecords()
         {
-            database.Execute("DELETE FROM [PortionTable]");
+            database.Execute("DELETE FROM [PortionItem]");
         }
         public List<PortionItem> GetPortionsByDateRange(string date_from, string date_to)
         {

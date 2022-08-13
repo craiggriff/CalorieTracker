@@ -7,56 +7,35 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using CalorieTracker.Models;
+using System.Text.Json;
+using System.Net.Http;
+using System.Collections.ObjectModel;
 
 namespace CalorieTracker
 {
     public partial class PortionList : ContentPage
     {
-        public class ListData
+        bool bSelected = false;
+        HttpClient client;
+        JsonSerializerOptions serializerOptions;
+        bool bRedrawList = false;
+
+        public class ListDataOC : ObservableCollection<ListData>
         {
-            public int RecID { get; set; }
-            public string time { get; set; }
-            public string date { get; set; }
-            public string product { get; set; }
-            public string calories { get; set; }
-            public string back_colour { get; set; }
-            public string text_colour { get; set; }
-            public string user_token { get; set; }
-
-            public ListData(int uID, string time, string date, string product, string calories, string user_token, bool b_completed, bool b_sent)
-            {
-                this.RecID = uID;
-                this.time = time;
-                this.date = date.Substring(0, 6) + date.Substring(8, 2);
-                this.product = product;
-                this.calories = calories;
-
-                this.back_colour = "#e8c658";
-                if(b_sent == true)
-                    this.text_colour = "#111166";
-                else
-                    if(b_completed == true)
-                        this.text_colour = "#116611";
-                    else
-                        this.text_colour = "#661111";
-
-                this.user_token = user_token;
-
-                if(App.Database.SettingsRecord.Admin && user_token.Length>2)
-                {
-                    // Generate a hex color based on User Token so it is eaier to see in the list
-                    this.back_colour = "#" + Convert.ToString(((user_token[0] - 64) * 5) + 126, 16) 
-                        + Convert.ToString(((user_token[2] - 64) * 5) + 126, 16) 
-                        + Convert.ToString(((user_token[1] - 64) * 5) + 126, 16);
-                }
-            }
+            public ListDataOC() { }
         }
 
-        bool bSelected = false;
-        
+        public static ListDataOC dataSource = new ListDataOC();
+
         public PortionList()
         {
             InitializeComponent();
+            client = new HttpClient();
+            serializerOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
 
             datepicker1.Date = DateTime.Today;
             datepicker2.Date = DateTime.Today;
@@ -78,25 +57,83 @@ namespace CalorieTracker
                 report_option.IconImageSource = "";
                 user_label.IsVisible = false;
             }
-            int num_unsent = App.Database.GetUnsentPortions().Count;
-            if(num_unsent>0)
-            {
-                send_unsent_button.Text = "Send (" + num_unsent.ToString() + ")";
-                send_unsent_button.IsEnabled = true;
-            }
-            else
-            {
-                send_unsent_button.Text = "Send";
-                send_unsent_button.IsEnabled = false;
-            }
-
+           
             if (App.Database.SettingsRecord.Admin == true)
                 total_bar.IsVisible = false;
             else
                 total_bar.IsVisible = true;
 
             CreateList();
+            bRedrawList = false;
+            Device.BeginInvokeOnMainThread(StartSend);
         }
+
+        private async void StartSend()
+        {
+            try
+            {
+                foreach (var p in App.Database.GetUnsentPortions())
+                {
+                    await SendPortionJson(p);
+
+                    if (bRedrawList == true)
+                    {
+                        var item = dataSource.FirstOrDefault(i => i.RecID == p.RecID);
+                        if (item != null)
+                        {
+                            item.text_colour = "#111166";
+                        }
+                        bRedrawList = false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                // Connection problem, will try again later
+            }
+        }
+
+        public async Task SendPortionJson(PortionItem item)
+        {
+            byte[] image_binary = null;
+
+            Uri uri = new Uri(string.Format(App.Database.SettingsRecord.ServerURL + "/ReceivePortionJson", string.Empty));
+
+            try
+            {
+                PortionDTOSend send_record = new PortionDTOSend(item);
+
+                if (App.Files.FileExists(item.RecID.ToString() + ".jpg"))
+                {
+                    image_binary = App.Files.LoadBinary(item.RecID.ToString() + ".jpg");
+                }
+                send_record.Photo = image_binary != null ? System.Convert.ToBase64String(image_binary) : "";
+
+                string json = JsonSerializer.Serialize<PortionDTOSend>(send_record, serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+
+                response = await client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string receive_content = await response.Content.ReadAsStringAsync();
+                    PortionDTO receive_record = JsonSerializer.Deserialize<PortionDTO>(receive_content, serializerOptions);
+
+                    item.Sent = true;
+                    item.DatabaseId = receive_record.Id;
+
+                    App.Database.SavePortionRecord(item);
+                    bRedrawList = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+        }
+
         private void OnBack(object sender, EventArgs e)
         {
             datepicker1.Date = datepicker1.Date.AddDays(-1);
@@ -109,7 +146,7 @@ namespace CalorieTracker
         }
         private void CreateList()
         {
-            List<ListData> dataSource = new List<ListData>();
+            dataSource.Clear();
 
             List<PortionItem> query = App.Database.GetPortionsByDateRange(datepicker1.Date.ToShortDateString(), datepicker2.Date.ToShortDateString());
 
@@ -145,10 +182,7 @@ namespace CalorieTracker
                 Navigation.PushAsync(new PortionView(), false);
             }
         }
-        private void OnSyncClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new Send(), false);
-        }
+
         private void OnDateSelected(object sender, DateChangedEventArgs e)
         {
             if (datepicker1.Date > datepicker2.Date)

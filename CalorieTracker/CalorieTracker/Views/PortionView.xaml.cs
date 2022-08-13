@@ -29,14 +29,11 @@ namespace CalorieTracker
 
         protected override bool OnBackButtonPressed()
         {
-            //ValidateSaveAndClose();
-            
             var vm = (PortionViewModel)BindingContext;
             if (vm.MyBackPressCommand.CanExecute(null))  // You can add parameters if any
             {
                 vm.MyBackPressCommand.Execute(null); // You can add parameters if any
             }
-            
 
             return true;
         }

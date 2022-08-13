@@ -59,7 +59,7 @@
             <Label Text="  cal" WidthRequest="80" />
         </StackLayout>
         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-            <Button x:Name="send_unsent_button" Text="Send" Clicked="OnSyncClicked" HorizontalOptions="FillAndExpand"/>
+            <!--<Button x:Name="send_unsent_button" Text="Send" Clicked="OnSyncClicked" HorizontalOptions="FillAndExpand"/>-->
             <Button Text="Add" Clicked="OnAddClicked" HorizontalOptions="FillAndExpand"/>
         </StackLayout>
     </StackLayout>

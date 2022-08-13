@@ -40,10 +40,14 @@ namespace CalorieTracker
             {
                 DisplayAlert("Error", e.ToString(), "OK");
             }
-            Navigation.PopAsync();
+            Device.BeginInvokeOnMainThread(CompleteDownload);
+            
         }
 
-
+        void CompleteDownload()
+        {
+            Navigation.PopAsync();
+        }
         public async void SendPortionJson(PortionItem item)
         {
             byte[] image_binary = null;

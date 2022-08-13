@@ -15,10 +15,20 @@
                     <controls:TimeLabel x:Name="portion_time" TheTime="{Binding Time}" LabelText="Time :" HorizontalOptions="Start"/>
                 </StackLayout>
             </StackLayout>
-            
-            <StackLayout WidthRequest="300"><controls:EntryLabelUnits x:Name="cal_entry" TextBinding="Calories" LabelText="Calorie Count :" UnitsText="cal" EntryKeyboard="Numeric"/></StackLayout>
+
             <Grid HeightRequest="10"></Grid>
-            <!--<controls:EntryLabel TextBinding="Product" LabelText="Description" max_text_length="250"/>-->
+            
+            <StackLayout Orientation="Horizontal" WidthRequest="300">
+                <Label Text="Calories" WidthRequest="150"/>
+                <Grid WidthRequest="20"/>
+                <Entry x:Name="cals" HorizontalTextAlignment="End" Keyboard="Numeric" Text="{Binding Calories}"/>
+                <Grid WidthRequest="20"/>
+                <Label Text="kCal" />
+            </StackLayout>
+            
+            <Grid HeightRequest="10"></Grid>
+            
+            <Label Text="Description"/>
             <Entry Text="{Binding Desc}" Placeholder="Product Description"/>
 
             <Grid HeightRequest="20"></Grid>
