@@ -12,7 +12,7 @@ namespace CalorieTracker.ViewModel
     {
         public INavigation Navigation { get; set; }
 
-        public Command MyBackPressCommand { get; set; }
+        public Command BackPressCommand { get; set; }
         public Command SavePortionCommand { get; }
 
         public PortionViewModel(INavigation navigation)
@@ -20,7 +20,7 @@ namespace CalorieTracker.ViewModel
             Navigation = navigation;
             SavePortionCommand = new Command(SaveCommand);
 
-            MyBackPressCommand = new Command(BackCommand);
+            BackPressCommand = new Command(BackCommand);
         }
 
         public void BackCommand()
